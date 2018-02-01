@@ -25,6 +25,7 @@ type BosQuery struct {
 	Source       string `bson:"source" json:"source"`
 	Notification string `bson:"notification" json:"notification"`
 	Description  string `bson:"description" json:"description"`
+	Preset       string `bson:"preset" json:"preset"`
 }
 
 // For text audit request from baidu
@@ -62,9 +63,14 @@ func (c *VcrClient) AuditVodMedia(mediaId string, preset string, notification st
 	return
 }
 
-func (c *VcrClient) AuditBosMedia(bucket string, source string, videoId string, notification string) (err error) {
+// bucket : bos BucketName
+// source : video URL
+// videoId : video id
+// notification : callback url
+// preset : Template name : qupost or quduopai
+func (c *VcrClient) AuditBosMedia(bucket string, source string, videoId string, notification string, preset string) (err error) {
 
-	var s BosQuery = BosQuery{Source: source, Notification: notification, Description: videoId}
+	var s BosQuery = BosQuery{Source: source, Notification: notification, Description: videoId, Preset: preset}
 	b, err := json.Marshal(s)
 	if err != nil {
 		return
